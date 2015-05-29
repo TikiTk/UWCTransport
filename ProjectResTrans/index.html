@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<link rel="stylesheet" href="style.css">
+		<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<!--Import jQuery before materialize.js-->
+		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+    <script>
+			$( document ).ready(function(){
+        $('.slider').slider({full_width: true});
+        $('select').material_select();
+				$(".button-collapse").sideNav();
+				$('.parallax').parallax();
+				$(".dropdown-button").dropdown();
+				$('.modal-trigger').leanModal();
+				$('.collapsible').collapsible({
+					accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+					});
+			})
+		</script>
+		<style>
+			.parallax-container {
+				height:300px;
+			}
+			body{
+			background-image:url("geometry2.png")
+			}
+
+		</style>
+	</head>
+
+    <body>
+      <!--Nav bar-->
+      <nav>
+        <div class="nav-wrapper  light-blue darken-4">
+          <a href="index.html" class="brand-logo">UWC Transport Service</a>
+          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+          <ul class="side-nav" id="mobile-demo">
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="parallax-container">
+    		<div class="parallax">
+    			<img src="img/sample3.jpg">
+
+
+
+
+
+          </img>
+    		</div>
+
+    	</div>
+      <!--main content-->
+      <div class="container">
+        <div class="row">
+
+          <div class="collection ">
+            <a href="#login" class="collection-item modal-trigger center"><p class="flow-text" style="color:#01579b;">Login</p></a>
+            <a href="admin.html" class="collection-item center"><p class="flow-text" style="color:#01579b;">Tour</p></a>
+
+          </div>
+        </div>
+
+
+
+        <div id="login" class="modal">
+          <div class="modal-content center">
+            <h4 style="color:#01579b;">Login</h4>
+            <p></p>
+            <div class="row">
+              <form class="col s12">
+
+                <div class="row">
+                  <div class="input-field col s12">
+                    <select>
+                      <option placeholder="select an option" value="" disabled selected></option>
+                      <option value="1"><span style="color:#01579b;">Admin</span></option>
+                      <option value="2"><span style="color:#01579b;">Staff</span></option>
+					  <option value="3"><span style="color:#01579b;">Student</span></option>
+                    </select>
+                    <label><span style="color:#01579b;">Type of user</span></label>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="input-field col s12">
+                    <input id="email" type="email" class="validate">
+                    <label for="email"><span style="color:#01579b;">Email</span></label>
+                  </div>
+
+                  <div class="input-field col s12">
+                    <input id="password" type="password" class="validate">
+                    <label for="email"><span style="color:#01579b;">Password</span></label>
+                  </div>
+
+
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <a href="booking.html" class=" modal-action modal-close waves-effect waves-blue btn-flat">login</a>
+          </div>
+
+        </div>
+      </div>
+    </body>
+</html>

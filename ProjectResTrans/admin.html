@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<link rel="stylesheet" href="style.css">
+		<link type="text/css" rel="stylesheet" href="css/materialize.css"  media="screen,projection"/>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"/>
+		<!--Import jQuery before materialize.js-->
+		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
+		<script type="text/javascript" src="js/materialize.min.js"></script>
+    <script>
+			$( document ).ready(function(){
+        $('.slider').slider({full_width: true});
+        $('select').material_select();
+				$(".button-collapse").sideNav();
+				$('.parallax').parallax();
+				$(".dropdown-button").dropdown();
+				$('.modal-trigger').leanModal();
+				$('.collapsible').collapsible({
+					accordion : false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+					});
+
+
+        $('.datepicker').pickadate({
+          selectMonths: true, // Creates a dropdown to control month
+          selectYears: 15 // Creates a dropdown of 15 years to control year
+          });
+
+			})
+		</script>
+		<style>
+			.parallax-container {
+				height:100px;
+			}
+			body{
+			background-image:url("geometry2.png")
+			}
+
+		</style>
+	</head>
+
+    <body>
+      <!--Nav bar-->
+      <nav>
+        <div class="nav-wrapper  light-blue darken-4">
+          <a href="index.html" class="brand-logo center">UWC Transport Service</a>
+          <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+          <ul class="right hide-on-med-and-down">
+            <li><a href="#!">Admin Page</a></li>
+            <li><a href="index.html">logout</a></li>
+          </ul>
+          <ul class="side-nav" id="mobile-demo">
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact us</a></li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="parallax-container">
+    		<div class="parallax">
+    	<img src="img/sample3.jpg">
+          </img>
+    		</div>
+
+    	</div>
+      <!--main content-->
+      <div class="container">
+          <div class="row">
+
+            <ul class="collapsible" data-collapsible="accordion">
+              <li>
+                <div class="collapsible-header"><i class="mdi-action-book"></i><p class="flow-text" style="color:#01579b;">Confirm Bookings</p></div>
+                <div class="collapsible-body">
+                
+				<ul class="collection">
+					<li class="collection-item dismissable">
+						<div>
+						Bongani(3301910), Trip:St center - Gorvalla [20/05/2015 - 14:00]   
+							<a href="#!" class="secondary-content tooltipped" data-position="right" data-delay="50" data-tooltip="accept">  <i class="mdi-action-done"></i></a>
+							<a href="#!" class="secondary-content tooltipped" data-position="left" data-delay="50" data-tooltip="reject"><i class="mdi-navigation-close"></i></a>
+						</div></li>
+					<li class="collection-item dismissable">
+						<div>
+						Bongani(3301910), Trip:St center - Gorvalla [20/05/2015 - 14:00]   
+							<a href="#!" class="secondary-content tooltipped" data-position="right" data-delay="50" data-tooltip="accept">  <i class="mdi-action-done"></i></a>
+							<a href="#!" class="secondary-content tooltipped" data-position="left" data-delay="50" data-tooltip="reject"><i class="mdi-navigation-close"></i></a>
+						</div></li>
+					<li class="collection-item dismissable">
+						<div>
+						Bongani(3301910), Trip:St center - Gorvalla [20/05/2015 - 14:00]   
+							<a href="#!" class="secondary-content tooltipped" data-position="right" data-delay="50" data-tooltip="accept">  <i class="mdi-action-done"></i></a>
+							<a href="#!" class="secondary-content tooltipped" data-position="left" data-delay="50" data-tooltip="reject"><i class="mdi-navigation-close"></i></a>
+						</div></li>
+					
+				</ul>
+				
+                </div>
+              </li>
+              <li>
+                <div class="collapsible-header"><i class="mdi-image-edit"></i><p class="flow-text" style="color:#01579b;">Respond to Enquiries</p></div>
+                <div class="collapsible-body">
+					<ul class="collection">
+					<li class="collection-item dismissable">
+						<div>
+						{Bongani:3301910} - How do I cancel a booking ?   
+							<a href="#enquiry" class="secondary-content tooltipped modal-trigger" data-position="right" data-delay="50" data-tooltip="edit">  <i class="mdi-content-reply"></i></a>
+							
+						</div></li>
+					</ul>
+				</div>
+              </li>
+              <li>
+                <div class="collapsible-header"><i class="mdi-image-edit"></i><p class="flow-text" style="color:#01579b;">Edit a Booking</p></div>
+                <div class="collapsible-body">
+				<ul class="collection">
+					<li class="collection-item dismissable">
+						<div>
+						Trip:St William Colleens - Gorvalla [20/05/2015 - 14:00]   
+							<a href="#update" class="secondary-content tooltipped modal-trigger" data-position="right" data-delay="50" data-tooltip="edit">  <i class="mdi-editor-border-color"></i></a>
+							
+						</div></li>
+					</ul>
+				
+				
+				</div>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+
+
+        <div id="update" class="modal">
+          <div class="modal-content center">
+            <h4 style="color:#01579b;">Edit booking</h4>
+  
+            <div class="row">
+              <form class="col s12">
+					
+					<select>
+                      <option value="" disabled selected>From</option>
+                      <option value="1">Student centre</option>
+                      <option value="2">Res Life center</option>
+                    </select>
+					<label><span style="color:#01579b;">From</span></label>
+					
+					<input id="To" type="text" class="input-field" placeholder="type your destination here"></input>
+					<label for="To">To<label>
+					
+					<input id="date" type="date" class="datepicker input-field"></input>
+					<label for="date">click here to pick a date<label>
+					
+					<input id="time" type="time" class="input-field"></input>
+					<label for="time">Select time<label>
+				</form>
+				</div>
+				</div>
+				<div class="modal-footer">
+            <a href="admin.html" class=" modal-action modal-close waves-effect waves-blue btn-flat">update</a>
+          </div>
+      </div>
+		
+		<div id="enquiry" class="modal">
+          <div class="modal-content center">
+            <h4 style="color:#01579b;">Edit booking</h4>
+  
+            <div class="row">
+				<form class="col s12">
+						  <div class="row">
+							<div class="input-field col s12">
+							  <textarea id="textarea1" class="materialize-textarea" placeholder="write here"></textarea>
+							  <label for="textarea1">Response</label>
+							  
+							  
+							</div>
+						  </div>
+						</form>
+						</div>
+						</div>
+						
+						<div class="modal-footer">
+            <a href="admin.html" class=" modal-action modal-close waves-effect waves-blue btn-flat">send</a>
+          </div>
+						</div>
+    </body>
+</html>
