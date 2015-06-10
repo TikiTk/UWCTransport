@@ -1,4 +1,5 @@
 # UWCTransport
+<<<<<<< HEAD
 Uwc transport programme
 This is the application break down.
 Please use university colours, it should be something simple but beautify and user friendly.
@@ -41,3 +42,6 @@ Website link: uwctransport.freeiz.com
 To edit the website you will need FTP software, for example FileZila.
 Changes first have to be done on our gitHub repository once verified by the team you can transfer the changes online.
 
+=======
+UWC transport programme
+>>>>>>> e5ec7db229d171144e7bea793ad083a76146e0da
