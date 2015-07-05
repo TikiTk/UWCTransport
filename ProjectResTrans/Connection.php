@@ -14,7 +14,7 @@ class Connection {
     public $stringLog;
     //constructor open database connection
     public function __construct() {
-        $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE);
+        $this->mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_DATABASE, 3306);
         if ($this->mysqli === false) {
                 die("ERROR: Could not connect. " . mysqli_connect_error());
         }

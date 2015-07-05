@@ -1,0 +1,82 @@
+start 12:00
+end 13:00
+type chc
+trans_no: 800, 200, 400
+book_no: 12
+
+start 12:00
+end 12:30
+type chc
+trans_no: 200, 400 //has to go through a list of transports.
+book_no: 12
+
+
+start 12:00
+end 12:30
+type chc
+trans_no: 400 //has to go through a list of transports.
+book_no: 12
+
+
+start 12:00
+end 12:30
+type chc
+trans_no: no transports //has to go through a list of transports.
+book_no: 12
+
+trans_no: 800;
+start 200 end 400
+
+
+
+//12:00-13:00
+
+===============================================================================================
+
+
+select * from transport, booking where transport.transport_type == $transport_type
+        if($result = $this->mysqli->query($query)){
+                if($result->num_rows > 0){
+                        while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                                $DB_booking_starting_time = $row['booking.booking_starting_time'];
+                                $DB_booking_ending_time = $row['booking.booking_ending_time'];
+                                
+ =============================================================================================================================================                               
+                                
+                                
+CREATE DATABASE uwc_transport_booking;
+
+use uwc_transport_booking;
+
+CREATE TABLE user(
+    user_id INT(10) NOT NULL,
+    user_fname VARCHAR(45) NOT NULL,
+    user_lname VARCHAR(45) NOT NUL,
+    user_cell VARCHAR(45) NOT NUL,
+    user_student_number VARCHAR(45) NOT NUL,
+    user_addrs VARCHAR(45) NOT NUL,
+    user_pass VARCHAR(45) NOT NUL,
+	PRIMARY KEY(user_id)
+);
+
+CREATE TABLE transport(
+    transport_id INT(10) NOT NULL,
+    transport_no VARCHAR(45) NOT NUL,
+    transport_type VARCHAR(45) NOT NUL,
+    PRIMARY KEY (transport_id)
+);
+
+
+CREATE TABLE booking(
+	booking_id INT(10) NOT NULL,
+	user_id INT(10) NOT NULL,
+	transport_id INT(10) NOT NULL,
+	booking_from VARCHAR(45),
+	booking_to VARCHAR(45),
+	booking_start_time DATETIME,
+	booking_ending_time DATETIME,
+	booking_confirmation VARCHAR(45),
+	PRIMARY KEY(booking_id),
+	FOREIGN KEY(student_id) REFERENCES student(student_id),
+	FOREIGN KEY(transport_id) REFERENCES transport(transport_id)
+);

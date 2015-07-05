@@ -1,6 +1,6 @@
 <?php
-define('DB_HOST', 'localhost');
-define('DB_USER', 'root');
-define('DB_PASSWORD', 'InsertYourPassword');
-define('DB_DATABASE', 'uwctransport');
+define('DB_HOST', getenv('IP'));
+define('DB_USER', getenv('C9_USER'));
+define('DB_PASSWORD', '');
+define('DB_DATABASE', 'c9');
 
