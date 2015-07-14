@@ -6,13 +6,18 @@
 Issues and Developments:
 •   Still need to do the OAuth method.
 
-•   Still need to do the fail page.
+•   Still need to do the fail template for login and booking.
 
 •   Still need to do fix check_double_booking line 77.
 
 •   Bug with Time picker for website.
 
 •   Still need to fix date and time for mobile app.
+
+•   Still need to fix date and time for web app.
+
+•   User interface for double booking. e.g "Please wait for 10min(google app trigger to check event) and try agian.
+
 
 Uwc transport programme
 This is the application break down.
