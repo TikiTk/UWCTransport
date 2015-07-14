@@ -1,4 +1,7 @@
 # UWCTransport
+
+
+<<<<<<< HEAD
 Issues and Developments:
 • Still need to do the OAuth method.
 • Still need to do the fail page.
@@ -6,7 +9,6 @@ Issues and Developments:
 • Bug with Time picker for website.
 • Still need to fix date and time for mobile app.
 
-<<<<<<< HEAD
 Uwc transport programme
 This is the application break down.
 Please use university colours, it should be something simple but beautify and user friendly.
