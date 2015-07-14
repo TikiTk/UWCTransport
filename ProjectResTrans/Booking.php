@@ -74,11 +74,11 @@ class Booking extends Transport {
         //checking for availbale trasport.
         $booking_start_timeA = strtotime($booking_start_time);
         $booking_end_timeA = strtotime($booking_end_time);
-        $check_double_bookiung = $this->chek_double_booking($booking_start_timeA, $booking_end_timeA);
+        /*$check_double_bookiung = $this->chek_double_booking($booking_start_timeA, $booking_end_timeA);
         if($check_double_bookiung == false){
             $booking_json = '{"report": "'.$this->stringLog.'"}';
             return $booking_json;
-        }
+        }*/
         $check_available = $this->check_available($booking_start_timeA, $booking_end_timeA);
         if($check_available === true){
             $query = 'INSERT INTO booking(booking_start_time, booking_end_time, booking_from, booking_to,  booking_message, transport_id, user_id)'.
@@ -133,8 +133,8 @@ class Booking extends Transport {
         }
     }
     
-    
-    public function check_double_booking($booking_start_timeA, $booking_end_timeA){
+    //TODO: To avoid users double booking or booking on the same day. line 77
+    /*public function check_double_booking($booking_start_timeA, $booking_end_timeA){
         $query ='SELECT *
                 FROM booking WHERE user_id='.$this->user_id.'
                 ORDER BY booking_id DESC';
@@ -159,7 +159,7 @@ class Booking extends Transport {
             $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
         }
         return true;
-    }
+    }*/
     
     public function cancelBooking($booking_id){
         $booking_id = $this->mysqli->real_escape_string($booking_id);
