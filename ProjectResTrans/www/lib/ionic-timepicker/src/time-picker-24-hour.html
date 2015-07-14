@@ -1,0 +1,47 @@
+<div class="24HourTimePickerChildDiv">
+  <div class="flex-item padding">
+    <span class="button-small flex-item col-offset-20 col-25">
+      <button class="button button-clear button-small button-dark timePickerArrows marginBottom10"
+              ng-click="increaseHours()">
+        <i class="icon ion-chevron-up"></i></button>
+      <input type="text" placeholder="" ng-model="time.hours" class="ipBoxes timePickerBoxText" disabled>
+      <button class="button button-clear button-small button-dark timePickerArrows marginTop10"
+              ng-click="decreaseHours()">
+        <i class="icon ion-chevron-down"></i></button>
+    </span>
+    <label class="col-10 timePickerColon"> : </label>
+    <span class="button-small flex-item col-25">
+      <button class="button button-clear button-small button-dark timePickerArrows marginBottom10"
+              ng-click="increaseMinutes()"><i class="icon ion-chevron-up"></i></button>
+      <input type="text" placeholder="" ng-model="time.minutes" class="ipBoxes timePickerBoxText" disabled>
+      <button class="button button-clear button-small button-dark timePickerArrows marginTop10"
+              ng-click="decreaseMinutes()"><i class="icon ion-chevron-down"></i></button>
+    </span>
+  </div>
+</div>
+
+<style type="text/css">
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-content: stretch;
+    align-items: flex-start;
+    }
+.popup { 
+  width:70%; 
+}
+.flex-item:nth-child(1) {
+    order: 0;
+    flex: 5 1 auto;
+    align-self: auto;
+    }
+
+.flex-item:nth-child(2) {
+    order: 0;
+    flex: 5 1 auto;
+    align-self: auto;
+    }
+
+</style>

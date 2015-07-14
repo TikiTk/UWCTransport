@@ -39,7 +39,7 @@ class User extends Connection {
 
         }
         else {
-             $this->stringLog .= "<br>Oops!: Could not execute query: sql. " .$this->mysqli->error;
+             $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error;
         }
     
     }
@@ -57,7 +57,7 @@ class User extends Connection {
             $this->user_pass =  $row['user_pass'];
         }
         else {
-             $this->stringLog .= "<br>Oops!: Could not execute query: sql. " .$this->mysqli->error;
+             $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error;
         }
         
     
@@ -82,7 +82,7 @@ class User extends Connection {
                 . ' FROM user WHERE user_number= "'.$user_number.'"';
         if ($result = $this->mysqli->query($query)) {
             if ($result->num_rows > 0) {
-                $this->stringLog .= "<br>The user_number ".$user_number." already exists.";
+                $this->stringLog .= "The user_number ".$user_number." already exists.";
                 return;
             }
         }
@@ -96,11 +96,11 @@ class User extends Connection {
         "'.$user_pass.'") ';
         if ($this->mysqli->query($query) === true) {
             $this->assignUserEmailAttributes($user_number);
-            $this->stringLog .= "<br>".$this->mysqli->affected_rows . " user updated.";
+            $this->stringLog .= "".$this->mysqli->affected_rows . " user updated.";
             //login Go to Home page.
         } else {
             //user exist
-            $this->stringLog .= "<br>Oops!: Could not execute query: sql. " . $this->mysqli->error;
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
         }
     }
     
@@ -119,18 +119,18 @@ class User extends Connection {
                 if($this->user_pass == $user_pass){
                     //login Go to home page.
                     $this->assignUserEmailAttributes($user_number);
-                    $this->stringLog .= "<br>".$this->user_fname;
+                    $this->stringLog .= "".$this->user_fname;
                 }else{
-                    $this->stringLog .= "<br>Wrong password.";
+                    $this->stringLog .= "Wrong password.";
                 }
             }else{
-                $this->stringLog .= "<br>The email ".$user_number." does not exists.";
+                $this->stringLog .= "The email ".$user_number." does not exists.";
             }
 
         }
         else {
             //somthing went wrong.
-           $this->stringLog .= "<br>Oops!: Could not execute query: sql. " .$this->mysqli->error;
+           $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error;
         }
     }
     

@@ -10,3 +10,7 @@ INSERT INTO `transport` (`transport_id`,`transport_no`,`transport_type`,`transpo
 INSERT INTO `transport` (`transport_id`,`transport_no`,`transport_type`,`transport_email`) VALUES (10,'301','student', 'nicholas.uwctransport@gmail.com ');
 INSERT INTO `transport` (`transport_id`,`transport_no`,`transport_type`,`transport_email`) VALUES (11,'400','chc', 'bdube83@yahoo.com');
 INSERT INTO `transport` (`transport_id`,`transport_no`,`transport_type`,`transport_email`) VALUES (12,'401','chc', 'Tlhologelo.uwctransport@gmail.com');
+
+
+UPDATE `transport` SET `transport_email`='bdube83@yahoo.com' WHERE `transport_id`='10';
+

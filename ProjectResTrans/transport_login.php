@@ -18,13 +18,17 @@
         <title></title>
     </head>
     <body>
+    <?php
+        session_start();
+        session_destroy();
+    ?>
         <script>
             jQuery(document).ready(function(){
                 $( "#button_login" ).click(function( event ) {
                     
                      // Using JSONP to connect to login.php
                     $.ajax({
-                        url: "login.php",
+                        url: "https://uwctransport-bdube83.c9.io/ProjectResTrans/login.php",
                                 
                            //prepering data to send.
                         type: 'POST',
@@ -39,8 +43,8 @@
                         success: function( response_login ) {
                             console.log(response_login);
                             if(response_login.report == 'true'){
-                                window.location.replace("transport_booking.html");//cannot go back.
-                                //window.location.href = "http://stackoverflow.com"; //can go back.
+                                window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/transport_booking.php");//cannot go back.
+                                //window.location.href = "transport_booking.php"; //can go back.
 
                             }else{
                                 alert('wrong password');

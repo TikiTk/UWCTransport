@@ -1,4 +1,6 @@
 <?php
+header("Access-Control-Allow-Origin: http://localhost:8100");
+
  // if form submitted
  // check supplied login credentials
  // against database
@@ -31,7 +33,8 @@
          $_SESSION['user_id'] = $user->user_id;
          $_SESSION['new_user'] = false;
          $_SESSION['welcome'] = true;
-         echo '{"report": "true"}';
+         echo '{"report": "true",'.
+                '"user_id": "'.$user->user_id.'"}';
                   
          //header('Location: index.php');
      }else{
@@ -39,6 +42,8 @@
         unset($user->mysqli);
         setcookie('report2', $user->stringLog, time()+86400, '/');
         echo '{"report": "false"}';
+        //echo '{"report": "'.$user->stringLog.'"}';
+        //echo '{"report": "email='.$email.'pass='.$password.'"}';
         //header('Location: index.php');
 
      }

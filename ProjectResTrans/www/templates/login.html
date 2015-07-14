@@ -1,0 +1,24 @@
+<ion-view view-title="Welcome" align-title="left">
+    <ion-content style="background: url(img/login.jpg) center; background-attachment:fixed;; background-size: cover;">
+        <div class="hero no-header flat">
+            <div class="content">
+                <div class="app-icon"></div>
+                <h1>RCSTransport-Beta</h1>
+            </div>
+        </div>
+        <div class="list padding">
+            <ion-md-input ng-model="login.email" placeholder="Email" highlight-color="balanced" type="text"></ion-md-input>
+            <ion-md-input ng-model="login.password" placeholder="Password" highlight-color="energized" type="password"></ion-md-input>
+        </div>
+        <div class="padding">
+            <button ng-click="fetch()" class="button button-full button-assertive ink">Login</button>
+        </div>
+        <div class="button-bar social-login">
+            <div>{{status}}</div>
+            <div>{{data}}</div>
+            <!--<button class="button button-small button-border icon-left ion-social-google button-assertive-900">Google+</button>
+            <button class="button button-small button-border icon-left ion-social-twitter button-calm-900">Twitter</button>
+            <button class="button button-small button-border icon-left ion-social-facebook button-positive-900">Facebook</button>-->
+        </div>
+    </ion-content>
+</ion-view>

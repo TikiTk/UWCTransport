@@ -3,10 +3,10 @@ function doGet(e) {
   var booking_end_time = e.parameter.booking_end_time;
   var booking_from =  e.parameter.booking_from;
   var booking_to =  e.parameter.booking_to;
-  var user_email = 'bdube83@gmail.com';
-  var transport_email = 'bdube83@yahoo.com';
+  var user_email =  e.parameter.user_number;
+  var transport_email = e.parameter.transport_email;
+  var description = e.parameter.booking_message;
   var summary = "Transport Booking.";
-  var description = "Please accept the invitation before the booking deadline.";
   
   var eventID = createEvent(summary,  booking_from, booking_to, description, booking_start_time, booking_end_time, user_email, transport_email);
   var result = {

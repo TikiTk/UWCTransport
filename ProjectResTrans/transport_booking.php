@@ -23,21 +23,31 @@
         <title></title>
     </head>
     <body>
+        <?php
+            session_start();
+            if (!isset($_SESSION['user_id'])) {
+                header('Location: https://uwctransport-bdube83.c9.io/ProjectResTrans/transport_login.php');
+            }
+        ?>
         <script>
 
             jQuery(document).ready(function(){
                 jQuery('#datetimepicker').datetimepicker();
                 jQuery('#datetimepicker2').datetimepicker();
-
+                
+                $( "#signout" ).click(function( event ) {
+                    window.location.replace('https://uwctransport-bdube83.c9.io/ProjectResTrans/transport_login.php');
+                });
+                
                 $( "#button_book" ).click(function( event ) {
                     var querystring = "start_time="+$("#datetimepicker").val()+
                                         "&end_time="+$("#datetimepicker2").val()+
                                         "&depart="+$("#depart").val()+
                                         "&travel="+$("#travel").val()+
                                         "&message="+$("#message").val();
-                     // Using JSONP to connect to booking.php
+                     // Using JSONP to connect to booking_google.php
                     $.ajax({
-                        url: "booking_json.php",
+                        url: "https://uwctransport-bdube83.c9.io/ProjectResTrans/booking_google.php",
                         
                         type: 'POST',
                         data: querystring,
@@ -48,34 +58,6 @@
                         // Work with the response
                         success: function( response_booking ) {
                             console.log(response_booking);
-                            //console.log(querystring);
-                                // Using JSONP to connect to google web app.
-                                $.ajax({
-                                    
-                                    //prepering data to send.
-                                    type: 'POST',
-                                    data: response_booking,
-                                    contentType: 'application/json; charset=utf-8',
-                                    
-                                    //google web app url
-                                    url: "https://script.google.com/macros/s/AKfycbzo_EGanCsMh2j8rjdtlVPjtgBYgf2QR8KLKHnJ8PHIfxjphQmM/exec",
-                                    
-                                    // The name of the callback parameter
-                                    jsonp: "cb", //java script object notation
-
-                                    // Tell jQuery we're expecting JSONP
-                                    dataType: "jsonp",
-                                    // Work with the response
-                                    success: function( response_google ) {
-                                        console.log(response_google);
-        
-                                    },
-                                    error: function (request, status, error) {
-                                        console.log(request.responseText);
-                                        console.log(error);
-                                        console.log(status);
-                                    }
-                                });
                         },
                         error: function (request, status, error) {
                             console.log(request.responseText);
@@ -96,6 +78,12 @@
             <h1>Transport Booking</h1>
             </div>
         
+            <div data-role="navbar">
+            	<ul>
+            		<li><a id="signout" >Sign-out</a></li>
+            	</ul>
+            </div><!-- /navbar -->
+            
             <div data-role="main" class="ui-content">
                 <form id="book">
                     <div class="ui-field-contain">

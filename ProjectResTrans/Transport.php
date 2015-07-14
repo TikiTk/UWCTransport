@@ -34,7 +34,7 @@ class Transport extends User {
             $this->transport_no = $transport_no;
         }
         else {
-             $this->stringLog .= "<br>Oops!: Could not execute query: sql. " .$this->mysqli->error." at assignTransportAttributes()";
+             $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error." at assignTransportAttributes()";
         }
     }
      
@@ -66,7 +66,7 @@ class Transport extends User {
                         }else{//found available transport number.
                             $this->transport_no = $current_transport_no;
                             $this->assignTransportAttributes($this->transport_no );
-                            $this->stringLog .= "<br>Found available transport number: ".$this->transport_no;
+                            $this->stringLog .= "Found available transport number: ".$this->transport_no;
                             return true;
                         }
                     }
@@ -76,7 +76,7 @@ class Transport extends User {
                             $get_next_transport_no =true;
                             if(!isset($suggested_time_to_book)){//getting next time to book suggestion for user.
                                 $suggested_time_to_book = $DB_booking_end_time;
-                                //echo '<br>suggested_time_to_book: '.$suggested_time_to_book.'<br>';
+                                //echo 'suggested_time_to_book: '.$suggested_time_to_book.'';
                             }else if($suggested_time_to_book < $DB_booking_end_time){
                                 $suggested_time_to_book = $DB_booking_end_time;
                             }
@@ -87,7 +87,7 @@ class Transport extends User {
                 if(!$get_next_transport_no && $current_transport_no){//checks the last transport number.
                     $this->transport_no = $current_transport_no;
                     $this->assignTransportAttributes($this->transport_no );
-                    $this->stringLog .= "<br>Found available transport number: ".$this->transport_no;
+                    $this->stringLog .= "Found available transport number: ".$this->transport_no;
                     return true;
                 }else{
                     //echo "Returning: ".$DB_booking_end_time;
@@ -95,12 +95,15 @@ class Transport extends User {
                 }
 
             }else{
-                
-                $this->stringLog .= "<br>Nothing in list: ". $this->mysqli->affected_rows." at check_available(). ";
+                if($this->user_type) {
+                    $this->stringLog .= "Nothing in list: ". $this->mysqli->affected_rows." at check_available(). ";
+                }else {
+                    $this->stringLog .= "User is not signed in.";
+                }
                 return false;
             }
         }else{
-            $this->stringLog .= "<br>Oops!: ". $this->mysqli->error." at check_available(). ";
+            $this->stringLog .= "Oops!: ". $this->mysqli->error." at check_available(). ";
         }
     }
 }          

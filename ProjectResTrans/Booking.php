@@ -36,7 +36,7 @@ class Booking extends Transport {
             $this->user_id =  $row['user_id'];  
         }
         else {
-            $this->stringLog .= "<br>Oops!: Could not execute query: sql. " . $this->mysqli->error." at assignBookingAttributes()";
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at assignBookingAttributes()";
         }
     }
     
@@ -63,7 +63,7 @@ class Booking extends Transport {
                 }
         }else {
             //Error
-            $this->stringLog .= "<br>Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
         }
         return trim($response);
         
@@ -74,6 +74,11 @@ class Booking extends Transport {
         //checking for availbale trasport.
         $booking_start_timeA = strtotime($booking_start_time);
         $booking_end_timeA = strtotime($booking_end_time);
+        $check_double_bookiung = $this->chek_double_booking($booking_start_timeA, $booking_end_timeA);
+        if($check_double_bookiung == false){
+            $booking_json = '{"report": "'.$this->stringLog.'"}';
+            return $booking_json;
+        }
         $check_available = $this->check_available($booking_start_timeA, $booking_end_timeA);
         if($check_available === true){
             $query = 'INSERT INTO booking(booking_start_time, booking_end_time, booking_from, booking_to,  booking_message, transport_id, user_id)'.
@@ -87,7 +92,7 @@ class Booking extends Transport {
                                     "'.$this->user_id.'") ';//insert user ID
                          
             if ($this->mysqli->query($query) === true){
-                $this->stringLog .= "<br>".$this->mysqli->affected_rows . " user updated.";
+                $this->stringLog .= "".$this->mysqli->affected_rows . " user updated.";
                 if ($stmt = $this->mysqli->prepare('SELECT LAST_INSERT_ID()')) {//get $booking_id
                     $stmt->execute();
                     $stmt->bind_result($booking_id);
@@ -110,22 +115,50 @@ class Booking extends Transport {
                 
             }
             else{
-                $this->stringLog .= "<br>Oops!: Could not execute query: sql. " . $this->mysqli->error." at booking_transport()";
+                $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at booking_transport()";
                 $booking_json = '{"report": "'.$this->stringLog.'"}';
                 return $booking_json;
             }
         }else if($check_available === false) {
-            $this->stringLog .= "<br>Transport is not available for specified date. Please check another time. ";
+            $this->stringLog .= "Transport is not available for specified date. Please check another time. ";
             $booking_json = '{"report": "'.$this->stringLog.'"}';
             return $booking_json;
 
         } else {
             $check_available = date('Y-m-d H:i:s', $check_available);
-            $this->stringLog .= "<br>Transport is not available for specified date. Please book after ".$check_available;
+            $this->stringLog .= "Transport is not available for specified date. Please book after ".$check_available;
             $booking_json = '{"check_available": "'.$this->stringLog.'"}';
             return $booking_json;
 
         }
+    }
+    
+    
+    public function check_double_booking($booking_start_timeA, $booking_end_timeA){
+        $query ='SELECT *
+                FROM booking WHERE user_id='.$this->user_id.'
+                ORDER BY booking_id DESC';
+        $response = '';
+        $booking_start_timeA = $booking_start_timeA+86000;
+        if($result = $this->mysqli->query($query)){
+                if($result->num_rows > 0){
+                        while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                                $this->booking_id = $row['booking_id'];
+                                $this->booking_start_time = $row['booking_start_time'];
+                                $this->booking_end_time = $row['booking_end_time'];
+                                $this->user_id = $row['user_id'];
+                                if ($booking_start_timeA < $booking_end_time){
+                                    $this->stringLog .= 'Please book after 24h or delete your current booking.';
+                                    return false;
+                                }
+                        }
+                        $result->close();
+                }
+        }else {
+            //Error
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
+        }
+        return true;
     }
     
     public function cancelBooking($booking_id){
@@ -133,9 +166,9 @@ class Booking extends Transport {
         $this->assignBookingAttributes($booking_id);
         $query = 'DELETE FROM booking WHERE booking_id = "'.$booking_id.'"';
         if ($this->mysqli->query($query) === true) {
-                $this->stringLog .= "<br>booking id: ".$booking_id. " has been removed. ";
+                $this->stringLog .= "booking id: ".$booking_id. " has been removed. ";
         } else {
-                $this->stringLog .= "<br>Oops!: Could not execute query: sql. " . $this->mysqli->error;
+                $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
         }
     }
     
