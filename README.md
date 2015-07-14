@@ -2,12 +2,17 @@
 
 
 <<<<<<< HEAD
+
 Issues and Developments:
-• Still need to do the OAuth method.
-• Still need to do the fail page.
-• Still need to do fix check_double_booking line 77.
-• Bug with Time picker for website.
-• Still need to fix date and time for mobile app.
+•   Still need to do the OAuth method.
+
+•   Still need to do the fail page.
+
+•   Still need to do fix check_double_booking line 77.
+
+•   Bug with Time picker for website.
+
+•   Still need to fix date and time for mobile app.
 
 Uwc transport programme
 This is the application break down.
