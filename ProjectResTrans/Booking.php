@@ -100,8 +100,8 @@ class Booking extends Transport {
                     }
                         $stmt->close();
                 }
-                
-                
+                $booking_start_time = date("Y-d-m\TH:i", strtotime(trim($booking_start_time)));
+                $booking_end_time = date("Y-d-m\TH:i", strtotime(trim($booking_end_time)));
                 $booking_json = '{
                                     "booking_start_time": "'.trim($booking_start_time).'",'.
                                     '"booking_end_time": "'.trim($booking_end_time).'",'.
@@ -109,6 +109,8 @@ class Booking extends Transport {
                                     '"booking_to": "'.trim($booking_to).'",'.
                                     '"booking_message": "'.trim($booking_message).'",'.
                                     '"transport_email": "'.trim($this->transport_email).'",'.
+                                    '"user_type": "'.trim($this->user_type).'",'.
+                                    '"user_fname": "'.trim($this->user_fname).'",'.     
                                     '"user_number": "'.trim($this->user_number).'",'.
                                     '"booking_id": "'.trim($booking_id).'"}';
                 return $booking_json;
@@ -145,6 +147,8 @@ class Booking extends Transport {
         }
         $check_available = $this->check_available($booking_start_timeEP, $booking_end_timeEP);
         if($check_available === true){
+            $booking_start_time = date("Y-d-m\TH:i", strtotime(trim($booking_start_time)));
+            $booking_end_time = date("Y-d-m\TH:i", strtotime(trim($booking_end_time)));
             $booking_json = '{
                                 "booking_start_time": "'.trim($booking_start_time).'",'.
                                 '"booking_end_time": "'.trim($booking_end_time).'",'.
@@ -152,6 +156,8 @@ class Booking extends Transport {
                                 '"booking_to": "'.trim($booking_to).'",'.
                                 '"booking_message": "'.trim($booking_message).'",'.
                                 '"transport_email": "'.trim($this->transport_email).'",'.
+                                '"user_type": "'.trim($this->user_type).'",'.
+                                '"user_fname": "'.trim($this->user_fname).'",'.
                                 '"user_number": "'.trim($this->user_number).'",'.
                                 '"booking_id": "'.trim('null').'"}';
             return $booking_json;
@@ -176,13 +182,16 @@ class Booking extends Transport {
                 FROM booking WHERE user_id='.$this->user_id.'
                 ORDER BY booking_id DESC';
         $response = '';
-        $booking_start_timeEP = strtotime('-1 day', $booking_start_timeEP);
+        //$booking_start_timeEP = strtotime('-1 day', $booking_start_timeEP);
         if($result = $this->mysqli->query($query)){
                 if($result->num_rows > 0){
                         while($row = $result->fetch_array(MYSQLI_ASSOC)){
 
                                 if ($booking_start_timeEP < $row['booking_end_time']){
-                                    $this->stringLog .= 'Sorry you cannot book on the same day. Please book after 24h or delete your current booking.';
+                                    $this->stringLog .= 'Sorry you cannot book on the same day. Please book 24h after '. date('Y-m-d H:i:s', $row['booking_end_time']).' or delete your current booking.';
+                                    //$this->stringLog .= 'BoolkedE: p'. $row['booking_end_time'].' or delete your current booking.';
+                                    //$this->stringLog .= 'Booking Date: '. date('Y-m-d H:i:s', $booking_start_timeEP);
+                                    //$this->stringLog .= 'Booking DateEp: '. $booking_start_timeEP.' or delete your current booking.';
                                     return false;
                                 }
                         }

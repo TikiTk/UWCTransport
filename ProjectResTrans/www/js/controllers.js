@@ -85,7 +85,7 @@ angular.module('starter.controllers', [])
         if(mm<10) {
             mm =    '0'+mm;
         } 
-        var date = dd+'/'+mm+'/'+yyyy;
+        var date = mm+'/'+dd+'/'+yyyy;
         return date;
     };
 
@@ -360,6 +360,7 @@ angular.module('starter.controllers', [])
     console.log(dateIn);   
     if(!dateIn || dateIn == null){
         $state.go('app.booking');
+        returnl;
     }
     // Set Header
     $scope.$parent.showHeader();
@@ -422,6 +423,8 @@ angular.module('starter.controllers', [])
                 alert(data.report);
             }else if(data.check_available){
                 alert(data.check_available);
+                $state.go('app.booking');
+                return;
             }else {
                 alert('Oops! Something went wrong please contact booking@uwctransport.freeiz.com for help.')
             }

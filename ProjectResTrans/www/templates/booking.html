@@ -15,7 +15,7 @@
             <div class="flex-container">
                 <div class="flex-item padding">
                     <ionic-datepicker idate="day.start" disablepreviousdates="true"  disablefuturedates="false" callback="datePickerCallback" title="day.title1">
-                        <button ng-click="nativeDate()" class="button button-block button-positive"> {{ day.start | date:'dd - MMMM - yyyy' }} </button>
+                        <button ng-click="nativeDate()" class="button button-block button-positive"> {{ day.start | date:'MMMM - dd - yyyy' }} </button>
                     </ionic-datepicker>
                 </div>
 
@@ -33,7 +33,7 @@
             <div class="flex-container">
                 <div class="flex-item padding">
                     <ionic-datepicker idate="day.end" disablepreviousdates="true"  disablefuturedates="false" callback="datePickerCallback" title="day.title2">
-                        <button ng-click="nativeDate()" class="button button-block button-positive"> {{ day.end | date:'dd - MMMM - yyyy' }} </button>
+                        <button ng-click="nativeDate()" class="button button-block button-positive"> {{ day.end | date:'MMMM - dd - yyyy' }} </button>
                     </ionic-datepicker>
                 </div>
 

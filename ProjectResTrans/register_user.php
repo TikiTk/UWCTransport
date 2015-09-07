@@ -13,12 +13,12 @@
     
     // check input
     if (empty($email)) {
-          $user->stringLog .= 'Please enter your user type. ';
+          $user->stringLog .= 'Please enter your user email. ';
           echo '{"report": "'.$user->stringLog .'"}';
           return;
     }
     elseif (empty($user_name)) {
-          $user->stringLog .= 'Please enter your user type. ';
+          $user->stringLog .= 'Please enter your user name. ';
           echo '{"report": "'.$user->stringLog .'"}';
           return;
     }
@@ -41,7 +41,8 @@
         $user->login_user($email, '1');
 
     }
-    elseif($user->user_id) {
+    
+    if($user->user_id) {
         session_start();
         session_destroy();
         session_start();

@@ -6,8 +6,8 @@ header("Access-Control-Allow-Origin: http://localhost:8100");
     require_once('./Booking.php');
     $booking = new Booking();
 
-    $start_time = date("Y-d-m\TH:i", strtotime(trim($_POST['start_time'])));
-    $end_time = date("Y-d-m\TH:i", strtotime(trim($_POST['end_time'])));
+    $start_time = date("Y/m/d H:i", strtotime(trim($_POST['start_time'])));
+    $end_time = date("Y/m/d H:i", strtotime(trim($_POST['end_time'])));
     //echo "start time: ".$start_time." end time: ".$end_time;
     //return;
     $depart = trim($_POST['depart']);
