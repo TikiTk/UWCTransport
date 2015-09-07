@@ -3,7 +3,6 @@ Issues and TODOs:
 
 •   Functionality:
     
-    5   Business logic for 24h booking.
 
     
     2   Cancel booking script method for google calender (When the user chooses to say no for an event).
@@ -14,6 +13,8 @@ Issues and TODOs:
         1   Still need to do the OAuth method for user registration.
 
         4   Still need to do fix checkSameDayBooking line 136 in Booking.php. #DoneDate 05/08
+        
+        5   Business logic for 24h booking.
 
 
 •   User Interface: 
@@ -35,8 +36,17 @@ Issues and TODOs:
         
         9   Prompt user If destination/departure is blank.
     
-        5   Still need to do the fail.html notifications for login and booking errors.
+        5   Still need to do the fail.html notifications for login and booking errors
+        
+•   Meeting with RCS
 
+        1   One driver who is the admin and driver(the admin will allocate the driver), more user friendly.
+        
+        2   @gmail.com staff(admin will verify if user is staff member).
+        
+        3   Staff bookkings higher priority.
+
+        4   date month and day missmatch on google script.
 
 •#please add issues or bugs.
 
