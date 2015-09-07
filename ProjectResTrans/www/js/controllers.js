@@ -21,10 +21,14 @@ angular.module('starter.controllers', [])
         });
     }
 
+    
     ////////////////////////////////////////
     // Layout Methods
     ////////////////////////////////////////
-
+    $scope.signout = function(){
+        window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/sign_out.php");//cannot go back.
+    }
+    
     $scope.hideNavBar = function() {
         document.getElementsByTagName('ion-nav-bar')[0].style.display = 'none';
     };
@@ -54,9 +58,11 @@ angular.module('starter.controllers', [])
           if (opType === 'time') {
             var hours = parseInt(val / 3600);
             var minutes = (val / 60) % 60;
-            var hoursRes = hours > 24 ? (hours - 24) : hours;
+            var hoursRes = hours > 12 ? (hours - 12) : hours;
 
-            return ($scope.prependZero(hoursRes) + ":" +  $scope.prependZero(minutes));
+            var currentMeridian = meridian[parseInt(hours / 12)];
+
+            return ($scope.prependZero(hoursRes) + ":" + $scope.prependZero(minutes) + " " + currentMeridian);
           }
         }
     };
@@ -195,12 +201,31 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('BookingCtrl', function($scope, $ionicPlatform, $cordovaDatePicker, $timeout, $state, $http, $stateParams, $ionicLoading, ionicMaterialInk) {
+.controller('BookingCtrl', function($scope, sharedProperties, $ionicPlatform, ionicMaterialMotion, $cordovaDatePicker, $timeout, $state, $http, $stateParams, $ionicLoading, ionicMaterialInk) {
+    function getCookie(name) {
+      var value = "; " + document.cookie;
+      var parts = value.split("; " + name + "=");
+      if (parts.length == 2) return parts.pop().split(";").shift();
+    }
+    $scope.$parent.user_id = getCookie('user_id');
+    if(!$scope.$parent.user_id) {
+            window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/index.html");//cannot go back.
+    }
+    // Set Header
+    $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
-    $timeout(function() {
-        $scope.$parent.hideHeader();
-    }, 0);
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
 
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    // Set Ink
     ionicMaterialInk.displayEffect();
 
     var date = new Date();
@@ -278,23 +303,38 @@ angular.module('starter.controllers', [])
     };
 
     $scope.timePickerCallback = function (val) {
-        $scope.slots.epochTime2 = val+3600;
-        $scope.slots.epochTime1 = val-3600;
+            $scope.slots.epochTime1 = val;
+            $scope.slots.epochTime2 = val+3600;
+
+            
         if (typeof (val) === 'undefined') {
             console.log('Time not selected');
         } else {
-
+                console.log('Selected epoch time is : ', $scope.$parent.epochParserG(val, 'time'));    // `val` will contain the selected time in epoch
                 console.log('Selected time is : ', $scope.$parent.epochParserG($scope.slots.epochTime1 , 'time')); 
-                console.log('Selected epoch time is : ', val);    // `val` will contain the selected time in epoch
+                console.log('Selected time2 is : ', $scope.$parent.epochParserG($scope.slots.epochTime2 , 'time')); 
             }
     };
+    
+      $scope.timePickerCallback2 = function (val) {
+            $scope.slots.epochTime1 = val-3600;
+            $scope.slots.epochTime2 = val;
 
-    $scope.travelDetails = {depart: '', travel: '', message: ''}
+            
+        if (typeof (val) === 'undefined') {
+            console.log('Time not selected');
+        } else {
+                console.log('Selected epoch time is : ', $scope.$parent.epochParserG(val, 'time'));    // `val` will contain the selected time in epoch
+                console.log('Selected time is : ', $scope.$parent.epochParserG($scope.slots.epochTime1 , 'time')); 
+                console.log('Selected time2 is : ', $scope.$parent.epochParserG($scope.slots.epochTime2 , 'time')); 
+            }
+    };
+    
+
 
     $scope.fetch = function() {
         if(!$scope.$parent.user_id) {
-            $state.go('app.login');
-            return;
+            window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/index.html");//cannot go back.
         }
 
         $scope.code = null;
@@ -304,47 +344,105 @@ angular.module('starter.controllers', [])
 
         var startTime = $scope.$parent.epochParserG($scope.slots.epochTime1 , 'time');
         var endTime = $scope.$parent.epochParserG($scope.slots.epochTime2 , 'time');
+        var date = {'startDay' : startDay,
+                    'startTime': startTime,
+                    'endDay': endDay,
+                    'endTime': endTime}
+        sharedProperties.setProperty(date);
+                    
+        $state.go('app.booking2');
+    };
+})
 
 
-        var querystring =   "start_time="+startDay+"/"+startTime+
-                            "&end_time="+endDay+"/"+endTime+
+.controller('BookingCtrl2', function($scope, $ionicPlatform, sharedProperties, ionicMaterialMotion, $cordovaDatePicker, $timeout, $state, $http, $stateParams, $ionicLoading, ionicMaterialInk) {
+    var dateIn = sharedProperties.getProperty();
+    console.log(dateIn);   
+    if(!dateIn || dateIn == null){
+        $state.go('app.booking');
+    }
+    // Set Header
+    $scope.$parent.showHeader();
+    $scope.$parent.clearFabs();
+    $scope.isExpanded = false;
+    $scope.$parent.setExpanded(false);
+    $scope.$parent.setHeaderFab(false);
+
+    // Set Motion
+    $timeout(function() {
+        ionicMaterialMotion.slideUp({
+            selector: '.slide-up'
+        });
+    }, 300);
+
+    // Set Ink
+    ionicMaterialInk.displayEffect();
+
+    $scope.travelDetails = {depart: '', travel: '', message: ''}
+
+    $scope.fetch = function() {
+        if(!$scope.$parent.user_id) {
+            window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/index.html");//cannot go back.
+        }
+        if(!$scope.travelDetails.depart){
+            $state.go('app.booking2');
+            alert("Please enter departure");
+            return;
+        }
+        if(!$scope.travelDetails.travel){
+            $state.go('app.booking2');
+            alert("Please enter destination");
+            return;
+        }
+        $scope.code = null;
+        $scope.response = null;
+
+
+        var querystring =   "start_time="+dateIn.startDay+" "+dateIn.startTime+
+                            "&end_time="+dateIn.endDay+" "+dateIn.endTime+
                             "&depart="+$scope.travelDetails.depart+
                             "&travel="+$scope.travelDetails.travel+
                             "&user_id="+$scope.$parent.user_id+
                             "&message="+$scope.travelDetails.message;
 
         console.log(querystring);   
-        $timeout(function() {           
-            $http({ 
-                    method: 'POST', 
-                    url: 'https://uwctransport-bdube83.c9.io/ProjectResTrans/booking_google.php', 
-                    headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
-                    data : querystring
-                }).
-              success(function(data, status) {
-                if(data.testing == 'success') {
-                    $state.go('app.bookingSuccess', {'response_booking' : data});
-                } else {
-                    $scope.error = 'Oops! Something went wrong please contact booking@uwctransport.freeiz.com for help.'
-                }
-                console.log(status);
-                console.log(data);
-                //$state.go('app.booking');
-              }).
-              error(function(data, status) {
-                console.log(data || "Request failed");
-                console.log(status);
-            });
-        }, 3000).then(function(report) {
-                  console.log('Success: ' + report);
-                }, function(report) {
-                  alert('Oops! Something went wrong, please check your network settings and try again: ');
-                  console.log('Fail: ' + report);
-                });;
+        
+        $http({ 
+                method: 'POST', 
+                url: 'https://uwctransport-bdube83.c9.io/ProjectResTrans/booking_google.php', 
+                headers : { 'Content-Type': 'application/x-www-form-urlencoded' },
+                data : querystring,
+                timeout : 40000 
+            }).
+          success(function(data, status) {
+            if(data.testing == 'success') {
+                sharedProperties.setProperty(data);
+                $state.go('app.bookingSuccess');
+            }else if(data.report){
+                alert(data.report);
+            }else if(data.check_available){
+                alert(data.check_available);
+            }else {
+                alert('Oops! Something went wrong please contact booking@uwctransport.freeiz.com for help.')
+            }
+            console.log(status);
+            console.log(data);
+            //$state.go('app.booking');
+          }).
+          error(function(data, status) {
+            alert(data || "Please re-book");
+            console.log(status);
+            $state.go('app.booking');
+        });
     };
 })
 
-.controller('BookingSuccessCtrl', function($scope, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+
+.controller('BookingSuccessCtrl', function($scope, $state, sharedProperties, $stateParams, $timeout, ionicMaterialInk, ionicMaterialMotion) {
+    var event = sharedProperties.getProperty();
+    if(!event){
+        $state.go('app.booking');
+    }
     // Set Header
     $scope.$parent.showHeader();
     $scope.$parent.clearFabs();
@@ -358,11 +456,16 @@ angular.module('starter.controllers', [])
 
     // Set Motion
     ionicMaterialMotion.fadeSlideInRight();
-
+    $scope.travelDetails = {driver : '',
+                    location : '',
+                    date: ''};
     // Set Ink
     ionicMaterialInk.displayEffect();
-    if($stateParams.response_booking) {
-        console.log($stateParams);
+    if(event) {
+        $scope.travelDetails.driver = event.eventID.attendees[0].email;
+        $scope.travelDetails.location = event.eventID.location;
+        $scope.travelDetails.date = event.eventID.start.dateTime;
+        
         /*$scope.travelDetails.driver= $stateParams.response_booking.eventID.attendees[0].email;
         $scope.travelDetails.location = $stateParams.response_booking.eventID.location;
         $scope.travelDetails.date = $stateParams.response_booking.eventID.location;*/
@@ -448,29 +551,17 @@ angular.module('starter.controllers', [])
         selector: '.animate-fade-slide-in .item'
     });
 
-});
+})
 
-app.config(function($httpProvider) {
-  $httpProvider.interceptors.push(function($rootScope) {
+.service('sharedProperties', function () {
+    var property = "";
+
     return {
-      request: function(config) {
-        $rootScope.$broadcast('loading:show')
-        return config
-      },
-      response: function(response) {
-        $rootScope.$broadcast('loading:hide')
-        return response
-      }
-    }
-  })
-})
-
-app.run(function($rootScope, $ionicLoading) {
-  $rootScope.$on('loading:show', function() {
-    $ionicLoading.show({template: 'foo'})
-  })
-
-  $rootScope.$on('loading:hide', function() {
-    $ionicLoading.hide()
-  })
-})
+        getProperty: function () {
+            return property;
+        },
+        setProperty: function(value) {
+            property = value;
+        }
+    };
+});

@@ -72,19 +72,19 @@ class Booking extends Transport {
     public function booking_transport($booking_start_time, $booking_end_time, $booking_from, $booking_to, $booking_message, $userId) {
         $this->assignUserAttributes($userId);
         //checking for availbale trasport.
-        $booking_start_timeA = strtotime($booking_start_time);
-        $booking_end_timeA = strtotime($booking_end_time);
-        /*$check_double_bookiung = $this->chek_double_booking($booking_start_timeA, $booking_end_timeA);
-        if($check_double_bookiung == false){
+        $booking_start_timeEP = strtotime($booking_start_time);
+        $booking_end_timeEP = strtotime($booking_end_time);
+        $checkSameDayBooking = $this->checkSameDayBooking($booking_start_timeEP, $booking_end_timeEP);
+        if($checkSameDayBooking == false){
             $booking_json = '{"report": "'.$this->stringLog.'"}';
             return $booking_json;
-        }*/
-        $check_available = $this->check_available($booking_start_timeA, $booking_end_timeA);
+        }
+        $check_available = $this->check_available($booking_start_timeEP, $booking_end_timeEP);
         if($check_available === true){
             $query = 'INSERT INTO booking(booking_start_time, booking_end_time, booking_from, booking_to,  booking_message, transport_id, user_id)'.
                                     ' VALUES (
-                                    "'.$booking_start_timeA.'",
-                                    "'.$booking_end_timeA.'",
+                                    "'.$booking_start_timeEP.'",
+                                    "'.$booking_end_timeEP.'",
                                     "'.$booking_from.'",
                                     "'.$booking_to.'",
                                     "'.$booking_message.'",
@@ -133,22 +133,56 @@ class Booking extends Transport {
         }
     }
     
+    public function booking_json($booking_start_time, $booking_end_time, $booking_from, $booking_to, $booking_message, $userId){
+        $this->assignUserAttributes($userId);
+        //checking for availbale trasport.
+        $booking_start_timeEP = strtotime($booking_start_time);
+        $booking_end_timeEP = strtotime($booking_end_time);
+        $checkSameDayBooking = $this->checkSameDayBooking($booking_start_timeEP, $booking_end_timeEP);
+        if($checkSameDayBooking == false){
+            $booking_json = '{"report": "'.$this->stringLog.'"}';
+            return $booking_json;
+        }
+        $check_available = $this->check_available($booking_start_timeEP, $booking_end_timeEP);
+        if($check_available === true){
+            $booking_json = '{
+                                "booking_start_time": "'.trim($booking_start_time).'",'.
+                                '"booking_end_time": "'.trim($booking_end_time).'",'.
+                                '"booking_from": "'.trim($booking_from).'",'.
+                                '"booking_to": "'.trim($booking_to).'",'.
+                                '"booking_message": "'.trim($booking_message).'",'.
+                                '"transport_email": "'.trim($this->transport_email).'",'.
+                                '"user_number": "'.trim($this->user_number).'",'.
+                                '"booking_id": "'.trim('null').'"}';
+            return $booking_json;
+                
+        }else if($check_available === false) {
+            $this->stringLog .= "Transport is not available for specified date. Please check another time. ";
+            $booking_json = '{"report": "'.$this->stringLog.'"}';
+            return $booking_json;
+
+        } else {
+            $check_available = date('Y-m-d H:i:s', $check_available);
+            $this->stringLog .= "Transport is not available for specified date. Please book after ".$check_available;
+            $booking_json = '{"check_available": "'.$this->stringLog.'"}';
+            return $booking_json;
+
+        }
+    }
+    
     //TODO: To avoid users double booking or booking on the same day. line 77
-    /*public function check_double_booking($booking_start_timeA, $booking_end_timeA){
+    public function checkSameDayBooking($booking_start_timeEP, $booking_end_timeEP){
         $query ='SELECT *
                 FROM booking WHERE user_id='.$this->user_id.'
                 ORDER BY booking_id DESC';
         $response = '';
-        $booking_start_timeA = $booking_start_timeA+86000;
+        $booking_start_timeEP = strtotime('-1 day', $booking_start_timeEP);
         if($result = $this->mysqli->query($query)){
                 if($result->num_rows > 0){
                         while($row = $result->fetch_array(MYSQLI_ASSOC)){
-                                $this->booking_id = $row['booking_id'];
-                                $this->booking_start_time = $row['booking_start_time'];
-                                $this->booking_end_time = $row['booking_end_time'];
-                                $this->user_id = $row['user_id'];
-                                if ($booking_start_timeA < $booking_end_time){
-                                    $this->stringLog .= 'Please book after 24h or delete your current booking.';
+
+                                if ($booking_start_timeEP < $row['booking_end_time']){
+                                    $this->stringLog .= 'Sorry you cannot book on the same day. Please book after 24h or delete your current booking.';
                                     return false;
                                 }
                         }
@@ -157,9 +191,10 @@ class Booking extends Transport {
         }else {
             //Error
             $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
+            return false;
         }
         return true;
-    }*/
+    }
     
     public function cancelBooking($booking_id){
         $booking_id = $this->mysqli->real_escape_string($booking_id);

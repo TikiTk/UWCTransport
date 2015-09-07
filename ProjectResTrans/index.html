@@ -7,6 +7,12 @@
 		<!--Import jQuery before materialize.js-->
 		<script type="text/javascript" src="js/jquery-2.1.1.min.js"></script>
 		<script type="text/javascript" src="js/materialize.min.js"></script>
+		
+		<!--Google Sign in-->
+	  <meta name="google-signin-scope" content="profile email">
+    <meta name="google-signin-client_id" content="866180971830-nv8sm1afo4cd65du4vglctuh1iupo260.apps.googleusercontent.com">
+    <script src="https://apis.google.com/js/platform.js" ></script>
+    
     <script>
 			$( document ).ready(function(){
         $('.slider').slider({full_width: true});
@@ -35,7 +41,7 @@
       <!--Nav bar-->
       <nav>
         <div class="nav-wrapper  light-blue darken-4">
-          <a href="index.html" class="brand-logo">UWC Transport Service</a>
+          <a href="index.html" class="brand-logo"> RCSTransport</a>
           <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
           <ul class="right hide-on-med-and-down">
             <li><a href="#about">About</a></li>
@@ -52,10 +58,6 @@
     		<div class="parallax">
     			<img src="img/sample3.jpg">
 
-
-
-
-
           </img>
     		</div>
 
@@ -66,7 +68,6 @@
 
           <div class="collection ">
             <a href="#login" class="collection-item modal-trigger center"><p class="flow-text" style="color:#01579b;">Login</p></a>
-            <a href="admin.html" class="collection-item center"><p class="flow-text" style="color:#01579b;">Tour</p></a>
 
           </div>
         </div>
@@ -82,18 +83,19 @@
 
                 <div class="row">
                   <div class="input-field col s12">
-                    <select>
+                    <select id="user_type">
                       <option placeholder="select an option" value="" disabled selected></option>
                       <option value="1"><span style="color:#01579b;">Admin</span></option>
                       <option value="2"><span style="color:#01579b;">Staff</span></option>
 					  <option value="3"><span style="color:#01579b;">Student</span></option>
                     </select>
                     <label><span style="color:#01579b;">Type of user</span></label>
+                    <div id="myuwc">If you don't see the google sign in button, please reload the page.</div>
                   </div>
                 </div>
 
                 <div class="row">
-                  <div class="input-field col s12">
+                 <!-- <div class="input-field col s12">
                     <input id="email" type="email" class="validate">
                     <label for="email"><span style="color:#01579b;">Email</span></label>
                   </div>
@@ -101,16 +103,109 @@
                   <div class="input-field col s12">
                     <input id="password" type="password" class="validate">
                     <label for="email"><span style="color:#01579b;">Password</span></label>
-                  </div>
+                  </div> -->
 
+                  <center>
+                    <div class="g-signin2" data-onsuccess="onSignIn" data-width="200" data-height="50" data-theme="dark"></div>
+                  </center>
+                  <script>
+                    function getCookie(name) {
+                      var value = "; " + document.cookie;
+                      var parts = value.split("; " + name + "=");
+                      if (parts.length == 2) return parts.pop().split(";").shift();
+                    }
+                    function onSignIn(googleUser) {
+                      if(getCookie('sign_out')){
+                        revokeAllScopes();
+                        window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/sign_in.php");
+                        return;
+                      }
+                      var e = document.getElementById("user_type");
+                      var user_type = e.options[e.selectedIndex].text;
+                      if(user_type == ''){
+                          document.getElementById("myuwc").innerHTML = "Please select user type.";
+                          revokeAllScopes();
+                      }
+                      console.log(document.cookie);
+                      //return;
+                      // Useful data for your client-side scripts:
+                      var profile = googleUser.getBasicProfile();
+                      var profileJSON = { 'email'       : profile.getEmail(),
+                                          'user_name'   : profile.getName(),
+                                          'user_type'   : user_type,
+                                          'id_token'    : googleUser.getAuthResponse().id_token};/* The ID token you need to pass to your backend: */
+                                          
+                      verifyLogin(profileJSON);
+                    }
+                    var revokeAllScopes = function() {
+                        var auth2 = gapi.auth2.getAuthInstance({
+                            client_id: '866180971830-nv8sm1afo4cd65du4vglctuh1iupo260.apps.googleusercontent.com',
+                            scope: 'profile'
+                        });
+                        console.log(auth2.disconnect());
+                    }
+                  </script>
 
+                <script>
+
+                  /*function that verifies user is from uwc, regesters the user on the server and re-directs to the booking page if true.
+                  *-----------------------------------------------------------------------------------
+                  *@param profileJSON : Useful data for your client-side scripts:
+                  */
+                  function verifyLogin(profileJSON){
+                      var email = profileJSON.email;
+                      var patt1 = /myuwc/g; 
+                      if(!email.match(patt1)){
+                            document.getElementById("myuwc").innerHTML = "Please sign in with your uwc account.";
+                            revokeAllScopes();
+                      }else{
+                          jQuery(document).ready(function(){
+                              document.getElementById("myuwc").innerHTML = "Please wait.";
+                               // Using JSONP to connect to register_user.php
+                              $.ajax({
+                                  url: "https://uwctransport-bdube83.c9.io/ProjectResTrans/register_user.php",
+                                          
+                                     //prepering data to send.
+                                  type: 'POST',
+                                  data: profileJSON,
+                                  
+                                  //contentType: 'application/json; charset=utf-8',
+                                  
+                                  // Tell jQuery we're expecting JSON
+                                  dataType: "json", 
+                                  
+                                  
+                                  // Work with the response
+                                  success: function( response_login ) {
+                                      console.log(response_login);
+                                      if(response_login.report == 'true'){
+                                          window.location.replace("https://uwctransport-bdube83.c9.io/ProjectResTrans/www/index.html#/app/booking?user_id="+response_login.user_id);//cannot go back.
+                                          //window.location.href = "transport_booking.php"; //can go back.
+          
+                                      }else{
+                                          alert('Please select user type and sign in.');
+                                      }
+                                  },
+                                  error: function (request, status, error) {
+                                      revokeAllScopes();
+                                      document.getElementById("myuwc").innerHTML = "Oops! Something went wrong, please sign in agian..";
+                                      console.log(request.responseText);
+                                      console.log(error);
+                                      console.log(status);
+                                  }
+                              });
+                          });
+                      }
+                  }
+                  
+                </script>
                 </div>
               </form>
             </div>
           </div>
-          <div class="modal-footer">
+          <!--<div class="modal-footer">
             <a href="booking.html" class=" modal-action modal-close waves-effect waves-blue btn-flat">login</a>
-          </div>
+          </div>-->
 
         </div>
       </div>

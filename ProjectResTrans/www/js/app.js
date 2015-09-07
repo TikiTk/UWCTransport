@@ -123,6 +123,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'ionMdInput','ionic-m
             }
         }
     })
+    
+        .state('app.booking2', {
+        url: '/booking2',
+        views: {
+            'menuContent': {
+                templateUrl: 'templates/booking2.html',
+                controller: 'BookingCtrl2'
+            },
+            'fabContent': {
+                template: ''
+            }
+        }
+    })
 
     .state('app.bookingSuccess', {
         url: '/bookingSuccess/:response_booking',
@@ -201,6 +214,7 @@ app.directive('standardTimeMeridian', function() {
           if (opType === 'time') {
             var hours = parseInt(val / 3600);
             var minutes = (val / 60) % 60;
+            console.log(val);
             var hoursRes = hours > 12 ? (hours - 12) : hours;
 
             var currentMeridian = meridian[parseInt(hours / 12)];

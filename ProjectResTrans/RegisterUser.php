@@ -42,9 +42,14 @@
         require_once('./Booking.php');
         
         $user = new User();
-        $user->register_user("King", "Luu", "27764443100", "bnkwebana@gmail.com ", "1", "student");
-        $user->register_user("Bongs", "Fee", "27761113100", "bdube83@gmail.com ", "1", "student");
+        //$user->register_user("King", "Luu", "27764443100", "bnkwebana@gmail.com", "1", "student");
+        //$user->register_user("Bongs", "Fee", "27761113100", "bdube83@gmail.com", "1", "student");
+        //$user->register_user("Sizwe", "mbatha", "27732323223", "sizwembatha64@gmail.com", "1", "student");
+        $user->register_user("TK", "", "277000000000", "your working email", "your password", "student");
+
+
         echo $user->stringLog;
+        
 
         
         //$booking = new Booking();

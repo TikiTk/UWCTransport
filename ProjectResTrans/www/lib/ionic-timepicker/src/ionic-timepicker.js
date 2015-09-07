@@ -106,7 +106,7 @@ angular.module('ionic-timepicker', ['ionic', 'ionic-timepicker.templates'])
                 {
                   text: 'Close',
                   onTap: function (e) {
-                    scope.callback(undefined);
+                    scope.callback(scope.etime);
                   }
                 },
                 {

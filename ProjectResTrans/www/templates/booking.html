@@ -1,6 +1,6 @@
 <ion-view view-title="Booking" align-title="left">
     <ion-content style="background: url(img/login.jpg) center; background-size: cover;">
-        <div class="hero no-header flat">
+        <div class="hero no-header flat" style="height: 210px">
             <div class="content">
                 <div class="app-icon"></div>
                 <h1>RCSTransport-Beta</h1>
@@ -38,20 +38,15 @@
                 </div>
 
                 <div class="flex-item padding">
-                    <ionic-timepicker etime="slots.epochTime2" format="slots.format" step="slots.step" callback="timePickerCallback">    
+                    <ionic-timepicker etime="slots.epochTime2" format="slots.format" step="slots.step" callback="timePickerCallback2">    
                         <button ng-click="nativeTime()" class="button flex-item button-block button-positive"> <standard-time-meridian etime='slots.epochTime2'></standard-time-meridian> </button>
                     </ionic-timepicker>
                 </div>
             </div>
 
-            <ion-md-input ng-model="travelDetails.depart" placeholder="Departure" highlight-color="energized" type="text"></ion-md-input>
-            <ion-md-input ng-model="travelDetails.travel" placeholder="Destination" highlight-color="energized" type="text"></ion-md-input>
-
-            <ion-md-input ng-model="travelDetails.message" placeholder="Message for the driver.. e.g 'I'll be waiting by the ATM..'" highlight-color="energized" type="text"></ion-md-input>
-
         </div>
         <div class="padding">
-            <button ng-click="fetch()" class="button button-full button-assertive ink">Book</button>
+            <button ng-click="fetch()" class="button button-full button-assertive ink">Next</button>
         </div>
         <div class="button-bar social-login">
             <!--<button class="button button-small button-border icon-left ion-social-google button-assertive-900">Google+</button>

@@ -1,23 +1,44 @@
 # UWCTransport
+Issues and TODOs:
+
+•   Functionality:
+    
+    5   Business logic for 24h booking.
+
+    
+    2   Cancel booking script method for google calender (When the user chooses to say no for an event).
+    
+    DONE:
+        3   Fix 24hour format. Bug with Time picker for website. http://stackoverflow.com/questions/10891425/how-to-use-google-calendar-apis-events-insert-command-properly
+
+        1   Still need to do the OAuth method for user registration.
+
+        4   Still need to do fix checkSameDayBooking line 136 in Booking.php. #DoneDate 05/08
 
 
-<<<<<<< HEAD
+•   User Interface: 
 
-Issues and Developments:
-•   Still need to do the OAuth method.
+    
+    8   Message about transport driver.
+    
+    
+    10  Link to the lower version web app for unsupported browsers(IE).
+    
+    
+    PAUSED:
+        11   Still need to fix date and time for mobile app. #Paused.
+    
+    Combine Issue:
+        "isseue 6" add to "issue 4":  User interface for same day booking. e.g "Please wait for 10min(google app trigger to check and remove past event) and try agian".
+    DONE:
+        7   TimeOut Function when screen loads and tries to connect to server "Please wait". .
+        
+        9   Prompt user If destination/departure is blank.
+    
+        5   Still need to do the fail.html notifications for login and booking errors.
 
-•   Still need to do the fail template for login and booking.
 
-•   Still need to do fix check_double_booking line 77.
-
-•   Bug with Time picker for website.
-
-•   Still need to fix date and time for mobile app.
-
-•   Still need to fix date and time for web app.
-
-•   User interface for double booking. e.g "Please wait for 10min(google app trigger to check event) and try agian.
-
+•#please add issues or bugs.
 
 Uwc transport programme
 This is the application break down.
@@ -60,7 +81,3 @@ Website details
 Website link: uwctransport.freeiz.com
 To edit the website you will need FTP software, for example FileZila.
 Changes first have to be done on our gitHub repository once verified by the team you can transfer the changes online.
-
-=======
-UWC transport programme
->>>>>>> e5ec7db229d171144e7bea793ad083a76146e0da
