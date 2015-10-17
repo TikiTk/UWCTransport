@@ -19,9 +19,7 @@ Issues and TODOs:
 
 •   User Interface: 
 
-    
     8   Message about transport driver.
-    
     
     10  Link to the lower version web app for unsupported browsers(IE).
     
@@ -38,7 +36,9 @@ Issues and TODOs:
     
         5   Still need to do the fail.html notifications for login and booking errors
         
-•   Meeting with RCS
+•   Meeting with RS
+
+        4   date month and day missmatch on google script.
 
         1   One driver who is the admin and driver(the admin will allocate the driver), more user friendly.
         
@@ -46,8 +46,12 @@ Issues and TODOs:
         
         3   Staff bookkings higher priority.
 
-        4   date month and day missmatch on google script.
+        5   Rating for the driver performance.
 
+        6   issue with time unpredictability (possible GPS app that detects if driver has started driving the car and finished, use the driver id and user booking id to start the app.)
+
+        7 Inverted commas on the message.
+        
 •#please add issues or bugs.
 
 Uwc transport programme

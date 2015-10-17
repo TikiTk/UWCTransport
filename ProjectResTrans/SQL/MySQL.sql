@@ -37,3 +37,13 @@ CREATE TABLE `booking` (
   CONSTRAINT `booking_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`),
   CONSTRAINT `booking_ibfk_2` FOREIGN KEY (`transport_id`) REFERENCES `transport` (`transport_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=33 DEFAULT CHARSET=latin1;
+
+DROP TABLE IF EXISTS `transport_date`;
+CREATE TABLE `transport_date` (
+  `transport_date_id` int(10) NOT NULL AUTO_INCREMENT,
+  `start_time` varchar(45) DEFAULT NULL,
+  `end_time` varchar(45) DEFAULT NULL,
+  `transport_id` int(10) NOT NULL,
+  PRIMARY KEY (`transport_date_id`),
+  KEY `transport_id` (`transport_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;

@@ -100,8 +100,8 @@ class Booking extends Transport {
                     }
                         $stmt->close();
                 }
-                $booking_start_time = date("Y-d-m\TH:i", strtotime(trim($booking_start_time)));
-                $booking_end_time = date("Y-d-m\TH:i", strtotime(trim($booking_end_time)));
+                $booking_start_time = date("Y-m-d\TH:i", strtotime(trim($booking_start_time)));
+                $booking_end_time = date("Y-m-d\TH:i", strtotime(trim($booking_end_time)));
                 $booking_json = '{
                                     "booking_start_time": "'.trim($booking_start_time).'",'.
                                     '"booking_end_time": "'.trim($booking_end_time).'",'.
@@ -131,11 +131,10 @@ class Booking extends Transport {
             $this->stringLog .= "Transport is not available for specified date. Please book after ".$check_available;
             $booking_json = '{"check_available": "'.$this->stringLog.'"}';
             return $booking_json;
-
         }
     }
     
-    public function booking_json($booking_start_time, $booking_end_time, $booking_from, $booking_to, $booking_message, $userId){
+    public function booking_json($booking_start_time, $booking_end_time, $booking_from, $booking_to, $booking_message, $userId) {
         $this->assignUserAttributes($userId);
         //checking for availbale trasport.
         $booking_start_timeEP = strtotime($booking_start_time);
@@ -147,8 +146,8 @@ class Booking extends Transport {
         }
         $check_available = $this->check_available($booking_start_timeEP, $booking_end_timeEP);
         if($check_available === true){
-            $booking_start_time = date("Y-d-m\TH:i", strtotime(trim($booking_start_time)));
-            $booking_end_time = date("Y-d-m\TH:i", strtotime(trim($booking_end_time)));
+            $booking_start_time = date("Y-m-d\TH:i", strtotime(trim($booking_start_time)));
+            $booking_end_time = date("Y-m-d\TH:i", strtotime(trim($booking_end_time)));
             $booking_json = '{
                                 "booking_start_time": "'.trim($booking_start_time).'",'.
                                 '"booking_end_time": "'.trim($booking_end_time).'",'.
@@ -197,12 +196,73 @@ class Booking extends Transport {
                         }
                         $result->close();
                 }
-        }else {
+        } else {
             //Error
             $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
             return false;
         }
         return true;
+    }
+    public function clearTransportDateTable() {
+        $query = 'DELETE FROM transport_date';
+        if ($this->mysqli->query($query) === true) {
+            $this->stringLog .= "All the data in 'transport_date' has been removed. ";
+        } else {
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
+        }
+    }
+    
+    public function findDriverId($start_time, $end_time, $transport_email){
+        $transport_email = htmlentities($this->mysqli->real_escape_string($transport_email));
+
+        $query = 'SELECT * '
+                . ' FROM transport WHERE transport_email= "'.$transport_email.'"';
+                
+        if ($result = $this->mysqli->query($query)) {
+            
+            $row = $result->fetch_assoc();
+            $transport_id =  $row['transport_id']; 
+            if($transport_id){
+                return $transport_id;
+            }else{
+                $this->stringLog .= "The driver with email ".$transport_email." does not exists.";
+            }
+
+        }
+        else {
+            //somthing went wrong.
+           $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error;
+        }
+        return null;
+    }
+    
+    public function insertDriver($driverTimeTable) {
+        $this->clearTransportDateTable();
+        foreach ($driverTimeTable as $driver) {
+            if ($driver['start_time'] && $driver['end_time'] && $driver['name']) {
+                $this->insertDriverHelper($driver['start_time'], $driver['end_time'], $driver['name']);
+            }
+        }
+    }
+    
+    public function insertDriverHelper($start_time, $end_time, $transport_email) {
+        $driverId = $this->findDriverId($start_time, $end_time, $transport_email);
+        $start_timeEP = strtotime($start_time);
+        $end_timeEP = strtotime($end_time);
+        
+        if($driverId) {
+            $query = 'INSERT INTO transport_date(start_time, end_time, transport_id)'.
+            ' VALUES (
+            "'.$start_timeEP.'",
+            "'.$end_timeEP.'",
+            "'.$driverId.'") ';
+            if ($this->mysqli->query($query) === true) {
+                $this->assignUserEmailAttributes($user_number);
+                $this->stringLog .= "".$this->mysqli->affected_rows . " trasport date updated.";
+            } else {
+                $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
+            }
+        }
     }
     
     public function cancelBooking($booking_id){
@@ -210,9 +270,9 @@ class Booking extends Transport {
         $this->assignBookingAttributes($booking_id);
         $query = 'DELETE FROM booking WHERE booking_id = "'.$booking_id.'"';
         if ($this->mysqli->query($query) === true) {
-                $this->stringLog .= "booking id: ".$booking_id. " has been removed. ";
+            $this->stringLog .= "booking id: ".$booking_id. " has been removed. ";
         } else {
-                $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
         }
     }
     

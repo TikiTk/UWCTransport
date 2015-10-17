@@ -30,8 +30,8 @@ header("Access-Control-Allow-Origin: http://localhost:8100");
     //print_r($booking_json_array);
     if(!$booking_json_array['check_available'] && !$booking_json_array['report']){
      $curl = curl_init();
-     // Set some options - we are passing in a useragent too here
-         
+     
+     /* Set some options.*/
      curl_setopt_array($curl, array(
          CURLOPT_RETURNTRANSFER => 1,
          CURLOPT_URL => 'https://script.google.com/macros/s/AKfycbx6oZCkVSQPDtrrOeiCmcsfAJ02OEnZp8o7CcVzEFfPi6avvc8/exec',
