@@ -105,12 +105,12 @@ class Booking extends Transport {
                 $booking_json = '{
                                     "booking_start_time": "'.trim($booking_start_time).'",'.
                                     '"booking_end_time": "'.trim($booking_end_time).'",'.
-                                    '"booking_from": "'.trim($booking_from).'",'.
-                                    '"booking_to": "'.trim($booking_to).'",'.
-                                    '"booking_message": "'.trim($booking_message).'",'.
+                                    '"booking_from": "'.addslashes(trim($booking_from)).'",'.
+                                    '"booking_to": "'.addslashes(trim($booking_to)).'",'.
+                                    '"booking_message": "'.addslashes(trim($booking_message)).'",'.
                                     '"transport_email": "'.trim($this->transport_email).'",'.
                                     '"user_type": "'.trim($this->user_type).'",'.
-                                    '"user_fname": "'.trim($this->user_fname).'",'.     
+                                    '"user_fname": "'.addslashes(trim($this->user_fname)).'",'.     
                                     '"user_number": "'.trim($this->user_number).'",'.
                                     '"booking_id": "'.trim($booking_id).'"}';
                 return $booking_json;
@@ -151,12 +151,12 @@ class Booking extends Transport {
             $booking_json = '{
                                 "booking_start_time": "'.trim($booking_start_time).'",'.
                                 '"booking_end_time": "'.trim($booking_end_time).'",'.
-                                '"booking_from": "'.trim($booking_from).'",'.
-                                '"booking_to": "'.trim($booking_to).'",'.
-                                '"booking_message": "'.trim($booking_message).'",'.
+                                '"booking_from": "'.addslashes(trim($booking_from)).'",'.
+                                '"booking_to": "'.addslashes(trim($booking_to)).'",'.
+                                '"booking_message": "'.addslashes(trim($booking_message)).'",'.
                                 '"transport_email": "'.trim($this->transport_email).'",'.
                                 '"user_type": "'.trim($this->user_type).'",'.
-                                '"user_fname": "'.trim($this->user_fname).'",'.
+                                '"user_fname": "'.addslashes(trim($this->user_fname)).'",'.
                                 '"user_number": "'.trim($this->user_number).'",'.
                                 '"booking_id": "'.trim('null').'"}';
             return $booking_json;
@@ -203,6 +203,27 @@ class Booking extends Transport {
         }
         return true;
     }
+    
+    public function dropBooking($booking_id) {
+        
+        $query = 'DELETE FROM booking WHERE booking_id = '.$booking_id;
+        if ($this->mysqli->query($query) === true) {
+            $this->stringLog .= "the data in 'booking' has been removed. ";
+        } else {
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
+        }
+    }
+    
+    
+        public function insertDriver($driverTimeTable) {
+        $this->clearTransportDateTable();
+        foreach ($driverTimeTable as $driver) {
+            if ($driver['start_time'] && $driver['end_time'] && $driver['name']) {
+                $this->insertDriverHelper($driver['start_time'], $driver['end_time'], $driver['name']);
+            }
+        }
+    }
+    
     public function clearTransportDateTable() {
         $query = 'DELETE FROM transport_date';
         if ($this->mysqli->query($query) === true) {
@@ -212,55 +233,52 @@ class Booking extends Transport {
         }
     }
     
-    public function findDriverId($start_time, $end_time, $transport_email){
+    public function insertDriverHelper($start_time, $end_time, $transport_email){
         $transport_email = htmlentities($this->mysqli->real_escape_string($transport_email));
 
         $query = 'SELECT * '
                 . ' FROM transport WHERE transport_email= "'.$transport_email.'"';
                 
-        if ($result = $this->mysqli->query($query)) {
-            
-            $row = $result->fetch_assoc();
-            $transport_id =  $row['transport_id']; 
-            if($transport_id){
-                return $transport_id;
-            }else{
-                $this->stringLog .= "The driver with email ".$transport_email." does not exists.";
-            }
-
+        if($result = $this->mysqli->query($query)){
+                if($result->num_rows > 0){
+                    while($row = $result->fetch_array(MYSQLI_ASSOC)){
+                        $transport_id =  $row['transport_id'];
+                        $this->insertOne($start_time, $end_time, $transport_email, $transport_id);
+                    }
+                    $result->close();
+                }
+        } else {
+            //Error
+            $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error." at displayAllBookings()";
+            return false;
         }
-        else {
-            //somthing went wrong.
-           $this->stringLog .= "Oops!: Could not execute query: sql. " .$this->mysqli->error;
-        }
+                
         return null;
     }
     
-    public function insertDriver($driverTimeTable) {
-        $this->clearTransportDateTable();
-        foreach ($driverTimeTable as $driver) {
-            if ($driver['start_time'] && $driver['end_time'] && $driver['name']) {
-                $this->insertDriverHelper($driver['start_time'], $driver['end_time'], $driver['name']);
-            }
-        }
-    }
     
-    public function insertDriverHelper($start_time, $end_time, $transport_email) {
-        $driverId = $this->findDriverId($start_time, $end_time, $transport_email);
+    public function insertOne($start_time, $end_time, $transport_email, $transport_id) {
         $start_timeEP = strtotime($start_time);
         $end_timeEP = strtotime($end_time);
         
-        if($driverId) {
+        if($transport_id) {
             $query = 'INSERT INTO transport_date(start_time, end_time, transport_id)'.
             ' VALUES (
             "'.$start_timeEP.'",
             "'.$end_timeEP.'",
-            "'.$driverId.'") ';
+            "'.$transport_id.'") ';
             if ($this->mysqli->query($query) === true) {
-                $this->assignUserEmailAttributes($user_number);
                 $this->stringLog .= "".$this->mysqli->affected_rows . " trasport date updated.";
             } else {
                 $this->stringLog .= "Oops!: Could not execute query: sql. " . $this->mysqli->error;
+            }
+        }
+    }
+    
+    public function deleteBookings($bookingIDs) {
+        foreach ($bookingIDs as $bookingID) {
+            if ($bookingID['booking_id']) {
+                $this->cancelBooking($bookingID['booking_id']);
             }
         }
     }

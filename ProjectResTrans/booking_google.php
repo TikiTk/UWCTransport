@@ -29,6 +29,10 @@ header("Access-Control-Allow-Origin: http://localhost:8100");
     // Get cURL resource
     //print_r($booking_json_array);
     if(!$booking_json_array['check_available'] && !$booking_json_array['report']){
+     
+     $booking_json = $booking->booking_transport($start_time, $end_time, $depart, $travel, $booking_message, $_SESSION['user_id']);
+     $booking_json_array = json_decode($booking_json, true);
+     
      $curl = curl_init();
      
      /* Set some options.*/
@@ -50,8 +54,11 @@ header("Access-Control-Allow-Origin: http://localhost:8100");
      //echo $resp;
      echo $resp;
      $resp_array = json_decode($resp, true);
+     
+     //after checking if transport is available with booking_json and sending booking to google then booking_transport insert booking.
      if($resp_array['testing'] == "success"){
-       $booking_json = $booking->booking_transport($start_time, $end_time, $depart, $travel, $booking_message, $_SESSION['user_id']);
+     } else {
+       $booking->cancelBooking($booking_json_array['booking_id']);
      }
      // Close request to clear up some resources
      curl_close($curl);

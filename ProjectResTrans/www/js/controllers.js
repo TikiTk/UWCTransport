@@ -360,7 +360,7 @@ angular.module('starter.controllers', [])
     console.log(dateIn);   
     if(!dateIn || dateIn == null){
         $state.go('app.booking');
-        returnl;
+        return;
     }
     // Set Header
     $scope.$parent.showHeader();
@@ -394,17 +394,30 @@ angular.module('starter.controllers', [])
             $state.go('app.booking2');
             alert("Please enter destination");
             return;
+        }        
+        if(!$scope.travelDetails.message){
+            $state.go('app.booking2');
+            alert("Please enter message description");
+            return;
         }
+        
         $scope.code = null;
         $scope.response = null;
+        var message = $scope.travelDetails.message.replace(/"/g, '');
+        message = $scope.travelDetails.message.replace(/'/g, '');
+        
+        var depart = $scope.travelDetails.depart.replace(/"/g, '');
+        depart = $scope.travelDetails.depart.replace(/'/g, '');
 
-
+        var travel = $scope.travelDetails.travel.replace(/"/g, '');
+        travel = $scope.travelDetails.travel.replace(/'/g, '');
+        
         var querystring =   "start_time="+dateIn.startDay+" "+dateIn.startTime+
                             "&end_time="+dateIn.endDay+" "+dateIn.endTime+
-                            "&depart="+$scope.travelDetails.depart+
-                            "&travel="+$scope.travelDetails.travel+
+                            "&depart="+depart+
+                            "&travel="+travel+
                             "&user_id="+$scope.$parent.user_id+
-                            "&message="+$scope.travelDetails.message;
+                            "&message="+message;
 
         console.log(querystring);   
         
@@ -465,9 +478,9 @@ angular.module('starter.controllers', [])
     // Set Ink
     ionicMaterialInk.displayEffect();
     if(event) {
-        $scope.travelDetails.driver = event.eventID.attendees[0].email;
+        /*$scope.travelDetails.driver = event.eventID.attendees[0].email;
         $scope.travelDetails.location = event.eventID.location;
-        $scope.travelDetails.date = event.eventID.start.dateTime;
+        $scope.travelDetails.date = event.eventID.start.dateTime;*/
         
         /*$scope.travelDetails.driver= $stateParams.response_booking.eventID.attendees[0].email;
         $scope.travelDetails.location = $stateParams.response_booking.eventID.location;

@@ -72,7 +72,7 @@ class User extends Connection {
     }
     
     public function register_user($user_fname, $user_lname, $user_cell, $user_number, $user_pass, $user_type){
-        $user_type = htmlentities($this->mysqli->real_escape_string($user_type));
+        $user_type = strtolower(htmlentities($this->mysqli->real_escape_string($user_type)));
         $user_fname = htmlentities($this->mysqli->real_escape_string($user_fname));
         $user_lname = htmlentities($this->mysqli->real_escape_string($user_lname));
         $user_cell = htmlentities($this->mysqli->real_escape_string($user_cell));

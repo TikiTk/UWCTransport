@@ -7,6 +7,8 @@ Issues and TODOs:
     
     2   Cancel booking script method for google calender (When the user chooses to say no for an event).
     
+    6   User Interface for admin to change user bookings.
+    
     DONE:
         3   Fix 24hour format. Bug with Time picker for website. http://stackoverflow.com/questions/10891425/how-to-use-google-calendar-apis-events-insert-command-properly
 
@@ -36,9 +38,10 @@ Issues and TODOs:
     
         5   Still need to do the fail.html notifications for login and booking errors
         
+        6   Installed crontab for drivet time table.
+        
 •   Meeting with RS
 
-        4   date month and day missmatch on google script.
 
         1   One driver who is the admin and driver(the admin will allocate the driver), more user friendly.
         
@@ -50,7 +53,15 @@ Issues and TODOs:
 
         6   issue with time unpredictability (possible GPS app that detects if driver has started driving the car and finished, use the driver id and user booking id to start the app.)
 
+        
+    Done
+        4   date month and day missmatch on google script.
+        
         7 Inverted commas on the message.
+        
+        
+
+
         
 •#please add issues or bugs.
 

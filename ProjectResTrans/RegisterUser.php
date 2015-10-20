@@ -40,15 +40,33 @@
         <?php
         require_once('./User.php');
         require_once('./Booking.php');
+        require_once('./Transport.php');
         
         $user = new User();
+        $transport = new Transport();
         //$user->register_user("King", "Luu", "27764443100", "bnkwebana@gmail.com", "1", "student");
         //$user->register_user("Bongs", "Fee", "27761113100", "bdube83@gmail.com", "1", "student");
         //$user->register_user("Sizwe", "mbatha", "27732323223", "sizwembatha64@gmail.com", "1", "student");
-        $user->register_user("TK", "", "277000000000", "your working email", "your password", "student");
+        //$user->register_user("TK", "", "277000000000", "your working email", "your password", "student");
+        
+        /*
+        $transport->register_transport("staff", "housingdriver1.myuwc@gmail.com", 1);
+        $transport->register_transport("staff", "housingdriver2@gmail.com", 2);
+        $transport->register_transport("staff", "housingdriver3@gmail.com", 3);
+        $transport->register_transport("staff", "housingdriver4@gmail.com", 4);
 
-
-        echo $user->stringLog;
+        $transport->register_transport("student", "housingdriver1.myuwc@gmail.com", 11);
+        $transport->register_transport("student", "housingdriver2@gmail.com", 22);
+        $transport->register_transport("student", "housingdriver3@gmail.com", 33);
+        $transport->register_transport("student", "housingdriver4@gmail.com", 44);
+        
+        $transport->register_transport("chc", "housingdriver1.myuwc@gmail.com", 111);
+        $transport->register_transport("chc", "housingdriver2@gmail.com", 222);
+        $transport->register_transport("chc", "housingdriver3@gmail.com", 333);
+        $transport->register_transport("chc", "housingdriver4@gmail.com", 444);
+        */
+        
+        echo $transport->stringLog;
         
 
         
