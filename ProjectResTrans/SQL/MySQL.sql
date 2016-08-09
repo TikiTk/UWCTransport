@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS `user`;
-CREATE TABLE `user` (
+CREATE TABLE `users` (
   `user_id` int(10) NOT NULL AUTO_INCREMENT,
   `user_fname` varchar(45) NOT NULL,
   `user_lname` varchar(45) NOT NULL,

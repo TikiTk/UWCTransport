@@ -7,7 +7,7 @@ Issues and TODOs:
     
     2   Cancel booking script method for google calender (When the user chooses to say no for an event).
     
-    6   User Interface for admin to change user bookings.
+    6   User Interface for admin to change user bookings. Booking does not get processed in DB until admin accepts?
     
     DONE:
         3   Fix 24hour format. Bug with Time picker for website. http://stackoverflow.com/questions/10891425/how-to-use-google-calendar-apis-events-insert-command-properly
