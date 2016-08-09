@@ -103,6 +103,4 @@ Software to be used:
 
 Website details
 
-Website link: uwctransport.freeiz.com
-To edit the website you will need FTP software, for example FileZila.
-Changes first have to be done on our gitHub repository once verified by the team you can transfer the changes online.
+Website Edit link: https://ide.c9.io/bdube83/uwctransport
