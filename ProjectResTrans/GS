@@ -1,0 +1,11 @@
+function doGet(e) {
+  e.parameter
+  var result = {
+    testing:  "apples skjdhfksjdflskjdflskjdfsdfsd"
+    
+  };
+  var cb = e.parameter.cb;
+  var outputStr = cb + '(' + JSON.stringify(result) + ');'
+  return ContentService.createTextOutput(outputStr).setMimeType(ContentService.MimeType.JAVASCRIPT);
+  //so from now on we'll be coding here
+}

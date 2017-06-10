@@ -1,0 +1,56 @@
+@startuml
+class Connection {
+    +mysqli
+    +stringLog
+    +__construct()
+    +__destruct()
+}
+class User {
+    +user_addrs
+    +user_cell
+    +user_fname
+    +user_id
+    +user_lname
+    -user_pass
+    +user_student_number
+    +assignUserAttributes(user_id)
+    +assignUserEmailAttributes(user_student_number)
+    +displayAllUsers()
+    +displayUser(user_id)
+    +login_user(user_student_number, user_pass)
+    +register_user(user_fname, user_lname, user_cell, user_student_number, user_pass)
+    +__construct()
+    +__destruct()
+}
+class User extends Connection
+class Booking {
+    +book_date
+    +book_ending_time
+    +book_num
+    +book_starting_time
+    +trans_no
+    +user_id
+    +assignBookingAttributes(book_num)
+    +book_transport_as_chc(book_starting_time, book_ending_time, book_date)
+    +book_transport_as_staff(book_starting_time, book_ending_time, book_date)
+    +book_transport_as_student(book_starting_time, book_ending_time, book_date)
+    +cancelBooking(book_num)
+    +displayAllBookings()
+    +displayBooking(book_num)
+    +toString()
+    +__construct()
+    +__destruct()
+}
+class Booking extends User
+class Booking extends Transport
+class Transport {
+    +trans_no
+    +trans_type
+    +assignTransportAttributes(trans_no)
+    +get_chc_transport()
+    +get_staff_transport()
+    +get_student_transport()
+    +__construct()
+    +__destruct()
+}
+@enduml
